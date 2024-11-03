@@ -1,12 +1,270 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Aplicación</title>
-</head>
-<body>
-    <h1>¡Bienvenido a mi aplicación!</h1>
-    <p>Esto es una aplicación básica con Python y HTML.</p>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generador de Contraseñas</title>
+    <link href="index.css" rel="stylesheet" type="text/css" />
+    <style>
+      body {
+        background-color: #151515;
+      }
+      h1 {
+        font-weight: bold;
+        color: white;
+      }
+      label {
+        color: white;
+        display: flex;
+        align-items: center;
+        font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto,
+          "Helvetica Neue", sans-serif;
+      }
+
+      .title {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .container {
+        display: flex;
+        flex-direction: column; /* Cambiado a column */
+        justify-content: center;
+        align-items: center;
+        gap: 10px; /* Espacio entre los elementos */
+      }
+      .button-23 {
+        background-color: #ffffff;
+        border: 1px solid #222222;
+        border-radius: 8px;
+        box-sizing: border-box;
+        color: #222222;
+        cursor: pointer;
+        display: inline-block;
+        font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto,
+          "Helvetica Neue", sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 20px;
+        margin: 0;
+        outline: none;
+        padding: 6px 13px;
+        position: relative;
+        text-align: center;
+        text-decoration: none;
+        touch-action: manipulation;
+        transition: box-shadow 0.2s, -ms-transform 0.1s, -webkit-transform 0.1s,
+          transform 0.1s;
+        user-select: none;
+        -webkit-user-select: none;
+        width: auto;
+      }
+
+      .button-23:focus-visible {
+        box-shadow: #222222 0 0 0 2px, rgba(255, 255, 255, 0.8) 0 0 0 4px;
+        transition: box-shadow 0.2s;
+      }
+
+      .button-23:active {
+        background-color: #f7f7f7;
+        border-color: #000000;
+        transform: scale(0.96);
+      }
+
+      .button-23:disabled {
+        border-color: #dddddd;
+        color: #dddddd;
+        cursor: not-allowed;
+        opacity: 1;
+      }
+      .checkbox-wrapper-2 .ikxBAC {
+        appearance: none;
+        background-color: #dfe1e4;
+        border-radius: 72px;
+        border-style: none;
+        flex-shrink: 0;
+        height: 20px;
+        margin: 0;
+        position: relative;
+        width: 30px;
+      }
+
+      .checkbox-wrapper-2 .ikxBAC::before {
+        bottom: -6px;
+        content: "";
+        left: -6px;
+        position: absolute;
+        right: -6px;
+        top: -6px;
+      }
+
+      .checkbox-wrapper-2 .ikxBAC,
+      .checkbox-wrapper-2 .ikxBAC::after {
+        transition: all 100ms ease-out;
+      }
+
+      .checkbox-wrapper-2 .ikxBAC::after {
+        background-color: #fff;
+        border-radius: 50%;
+        content: "";
+        height: 14px;
+        left: 3px;
+        position: absolute;
+        top: 3px;
+        width: 14px;
+      }
+
+      .checkbox-wrapper-2 input[type="checkbox"] {
+        cursor: default;
+      }
+
+      .checkbox-wrapper-2 .ikxBAC:hover {
+        background-color: #c9cbcd;
+        transition-duration: 0s;
+      }
+
+      .checkbox-wrapper-2 .ikxBAC:checked {
+        background-color: #6e79d6;
+      }
+
+      .checkbox-wrapper-2 .ikxBAC:checked::after {
+        background-color: #fff;
+        left: 13px;
+      }
+
+      .checkbox-wrapper-2 :focus:not(.focus-visible) {
+        outline: 0;
+      }
+
+      .checkbox-wrapper-2 .ikxBAC:checked:hover {
+        background-color: #535db3;
+      }
+      #rangeValue {
+  position: relative;
+  display: block;
+  text-align: center;
+  font-size: 6em;
+  color: #999;
+  font-weight: 400;
+}
+.range {
+  width: 400px;
+  height: 15px;
+  -webkit-appearance: none;
+  background: #111;
+  outline: none;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 1);
+}
+.range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #00fd0a;
+  cursor: pointer;
+  border: 4px solid #333;
+  box-shadow: -407px 0 0 400px #00fd0a;
+}
+
+    </style>
+    <script>
+      function generarContraseña() {
+        const longitud = document.getElementById("longitud").value;
+        const usar_letras = document.getElementById("usar_letras").checked;
+        const usar_numeros = document.getElementById("usar_numeros").checked;
+        const usar_caracteres =
+          document.getElementById("usar_caracteres").checked;
+
+        const data = {
+          longitud: longitud,
+          usar_letras: usar_letras,
+          usar_numeros: usar_numeros,
+          usar_caracteres: usar_caracteres,
+        };
+
+        fetch("/generar_contraseña", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const contraseñaElemento = document.getElementById("contraseña");
+            contraseñaElemento.textContent = data.contraseña;
+            contraseñaElemento.dataset.contraseña = data.contraseña; // Guarda la contraseña en un atributo
+          })
+          .catch((error) => console.error("Error:", error));
+      }
+
+      function copiarContraseña() {
+        const contraseña =
+          document.getElementById("contraseña").dataset.contraseña;
+        if (contraseña) {
+          navigator.clipboard
+            .writeText(contraseña)
+            .then(() => {
+              alert("Contraseña copiada al portapapeles");
+            })
+            .catch((err) => {
+              console.error("Error al copiar: ", err);
+            });
+        } else {
+          alert("Primero genera una contraseña.");
+        }
+      }
+
+      function cargarLongitud() {
+        const longitudGuardada = localStorage.getItem("longitud");
+        if (longitudGuardada) {
+          document.getElementById("longitud").value = longitudGuardada;
+          document.getElementById("valor-longitud").textContent =
+            longitudGuardada;
+        }
+      }
+      function rangeSlide(value) {
+            document.getElementById('rangeValue').innerHTML = value;
+        }
+
+      window.onload = cargarLongitud; // Carga la longitud al cargar la página
+    </script>
+  </head>
+  <body>
+    <div>
+      <h1 class="title">Generador de Contraseñas</h1>
+      <div class="container">   <br />
+        <span id="rangeValue">0</span>
+        <Input class="range" type="range" name "" value="0" min="0" max="50" onChange="rangeSlide(this.value)" onmousemove="rangeSlide(this.value)"></Input><br />
+
+        <div class="checkbox-wrapper-2">
+          <label>
+            <input type="checkbox" class="sc-gJwTLC ikxBAC" /> Incluir letras
+          </label>
+        </div>
+        <div class="checkbox-wrapper-2">
+          <label>
+            <input type="checkbox" class="sc-gJwTLC ikxBAC" />Incluir números
+          </label>
+        </div>
+        <div class="checkbox-wrapper-2">
+          <label>
+            <input type="checkbox" class="sc-gJwTLC ikxBAC" />Incluir caracteres
+            especiales
+          </label>
+        </div>
+        <!-- <button onclick="generarContraseña()">Generar Contraseña</button>
+        <button onclick="copiarContraseña()">Copiar Contraseña</button> -->
+        <button class="button-23" onclick="generarContraseña()">
+          Generar Contraseña
+        </button>
+        <button class="button-23" onclick="copiarContraseña()">
+          Copiar Contraseña
+        </button>
+      </div>
+      
+    </div>
+  </body>
 </html>
